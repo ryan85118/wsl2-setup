@@ -1,3 +1,24 @@
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# WSL specific
+if [[ -v WSL_DISTRO_NAME ]] then
+	alias ex=/mnt/c/Windows/explorer.exe # 可以用 ex <directory> 來打開檔案總管
+	# Copy .ssh
+	upd_ssh(){ # 從 Windows 的 .ssh 中複製檔案到 ~/.ssh
+		rm -rf ~/.ssh
+		/bin/cp -rf "/mnt/c/Users/$(whoami)/.ssh" ~/.ssh
+		chmod 600 ~/.ssh/*
+	}
+	# Windows Path handling for performance
+	WIN_PATH=$(echo $PATH | tr ':' '\n' | grep '/mnt/c' | tr '\n' ':' | sed 's/.$//')
+	export PATH=$(echo $PATH | tr ':' '\n' | grep -v '/mnt/c' | tr '\n' ':' | sed 's/.$//')
+	zinit wait'3' lucid atinit'export PATH="$PATH:$WIN_PATH"' nocd for /dev/null
+fi
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -8,14 +29,7 @@ export ZSH="/root/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
-
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+ZSH_THEME="dracula"
 
 # Turn off all beeps
 unsetopt BEEP
@@ -34,7 +48,6 @@ if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
         print -P "%F{160}▓▒░ The clone has failed.%f%b"
 fi
 
-source "$HOME/.zinit/bin/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
@@ -44,7 +57,6 @@ zinit light-mode for \
     zinit-zsh/z-a-as-monitor \
     zinit-zsh/z-a-patch-dl \
     zinit-zsh/z-a-bin-gem-node
-
 #
 # Load plugins
 #
@@ -57,16 +69,8 @@ zinit wait lucid for \
 		zsh-users/zsh-autosuggestions \
 	blockf \
 		zsh-users/zsh-completions
-
-# zinit wait lucid for \
-# 	zdharma/zsh-unique-id \
-# 	OMZ::lib/git.zsh \
-# 	atload"unalias grv g" \
-# 	OMZ::plugins/git/git.plugin.zsh
-
-# powerlevel10k
 zinit ice depth=1
-zinit light romkatv/powerlevel10k
+zinit light romkatv/powerlevel10k # Powerlevel10k
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -160,7 +164,6 @@ source $ZSH/oh-my-zsh.sh
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
