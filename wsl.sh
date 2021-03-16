@@ -26,7 +26,10 @@ git config --global core.autocrlf input
 
 #add dracula theme for zsh
 git clone https://github.com/dracula/zsh.git
-ln -s /root/zsh/dracula.zsh-theme /root/.oh-my-zsh/themes/dracula.zsh-theme
+cp ./zsh/dracula.zsh-theme /root/.oh-my-zsh/themes/dracula.zsh-theme
+cp -r ./zsh/lib /root/.oh-my-zsh/themes/lib
+cp ./.zshrc /root/.zshrc
+rm -r zsh
 upgrade_oh_my_zsh
 
 #git ssh
@@ -35,24 +38,20 @@ upgrade_oh_my_zsh
 # ssh-add ~/.ssh/id_rsa
 
 #Node.js
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | zsh
-command -v nvm
-nvm install --lts
-node --version && npm --version
 
 #Docker
-sudo apt-get update
-sudo apt-get install \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    gnupg-agent \
-    software-properties-common
-sudo apt-get update
-sudo apt-get install docker-ce docker-ce-cli containerd.io
-sudo service docker start
-sudo docker run hello-world
+# sudo apt-get update
+# sudo apt-get install \
+#     apt-transport-https \
+#     ca-certificates \
+#     curl \
+#     gnupg-agent \
+#     software-properties-common
+# sudo apt-get update
+# sudo apt-get install docker-ce docker-ce-cli containerd.io
+# sudo service docker start
+# sudo docker run hello-world
 
 #Docker Compose
-sudo curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-docker-compose --version
+# sudo curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+# docker-compose --version

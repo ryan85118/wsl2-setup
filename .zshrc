@@ -4,21 +4,6 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# WSL specific
-if [[ -v WSL_DISTRO_NAME ]] then
-	alias ex=/mnt/c/Windows/explorer.exe # 可以用 ex <directory> 來打開檔案總管
-	# Copy .ssh
-	upd_ssh(){ # 從 Windows 的 .ssh 中複製檔案到 ~/.ssh
-		rm -rf ~/.ssh
-		/bin/cp -rf "/mnt/c/Users/$(whoami)/.ssh" ~/.ssh
-		chmod 600 ~/.ssh/*
-	}
-	# Windows Path handling for performance
-	WIN_PATH=$(echo $PATH | tr ':' '\n' | grep '/mnt/c' | tr '\n' ':' | sed 's/.$//')
-	export PATH=$(echo $PATH | tr ':' '\n' | grep -v '/mnt/c' | tr '\n' ':' | sed 's/.$//')
-	zinit wait'3' lucid atinit'export PATH="$PATH:$WIN_PATH"' nocd for /dev/null
-fi
-
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -72,6 +57,20 @@ zinit wait lucid for \
 zinit ice depth=1
 zinit light romkatv/powerlevel10k # Powerlevel10k
 
+# WSL specific
+if [[ -v WSL_DISTRO_NAME ]] then
+	alias ex=/mnt/c/Windows/explorer.exe # 可以用 ex <directory> 來打開檔案總管
+	# Copy .ssh
+	upd_ssh(){ # 從 Windows 的 .ssh 中複製檔案到 ~/.ssh
+		rm -rf ~/.ssh
+		/bin/cp -rf "/mnt/c/Users/Ryanho/.ssh" ~/.ssh
+		chmod 600 ~/.ssh/*
+	}
+	# Windows Path handling for performance
+	WIN_PATH=$(echo $PATH | tr ':' '\n' | grep '/mnt/c' | tr '\n' ':' | sed 's/.$//')
+	export PATH=$(echo $PATH | tr ':' '\n' | grep -v '/mnt/c' | tr '\n' ':' | sed 's/.$//')
+	zinit wait'3' lucid atinit'export PATH="$PATH:$WIN_PATH"' nocd for /dev/null
+fi
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
 # a theme from this variable instead of looking in $ZSH/themes/
@@ -164,6 +163,11 @@ source $ZSH/oh-my-zsh.sh
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+# for ls dracula colors 
+LS_COLORS="fi=00:mi=00:mh=00:ln=01;36:or=01;31:di=01;34:ow=04;01;34:st=34:tw=04;34:pi=01;33:so=01;33:do=01;33:bd=01;33:cd=01;33:su=01;35:sg=01;35:ca=01;35:ex=01;32:no=38;5;248"
+export LS_COLORS
