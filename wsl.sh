@@ -1,6 +1,5 @@
-
 sudo apt update && sudo apt upgrade
-
+ 
 ##zsh
 sudo apt install zsh
 zsh --version
@@ -26,9 +25,9 @@ git config --global core.autocrlf input
 
 #add dracula theme for zsh
 git clone https://github.com/dracula/zsh.git
-cp ./zsh/dracula.zsh-theme /root/.oh-my-zsh/themes/dracula.zsh-theme
-cp -r ./zsh/lib /root/.oh-my-zsh/themes/lib
-cp ./.zshrc /root/.zshrc
+cp ./zsh/dracula.zsh-theme /${USER}/.oh-my-zsh/themes/dracula.zsh-theme
+cp -r ./zsh/lib /${USER}/.oh-my-zsh/themes/lib
+cp ./.zshrc /${USER}/.zshrc
 rm -r zsh
 upgrade_oh_my_zsh
 
