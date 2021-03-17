@@ -16,16 +16,9 @@ export ZSH="/root/.oh-my-zsh"
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="dracula"
 
-# Turn off all beeps
-unsetopt BEEP
-# Turn off autocomplete beeps
-unsetopt LIST_BEEP
-
-# zinit
-source "$HOME/.zinit/bin/zinit.zsh"
-
 # Zinit
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
+	source "$HOME/.zinit/bin/zinit.zsh"
     print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
     command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
     command git clone https://github.com/zdharma/zinit "$HOME/.zinit/bin" && \
@@ -59,13 +52,24 @@ zinit light romkatv/powerlevel10k # Powerlevel10k
 
 # WSL specific
 if [[ -v WSL_DISTRO_NAME ]] then
+	# Turn off all beeps
+	# unsetopt BEEP
+	# Turn off autocomplete beeps
+	unsetopt LIST_BEEP
+
 	alias ex=/mnt/c/Windows/explorer.exe # 可以用 ex <directory> 來打開檔案總管
+	
 	# Copy .ssh
 	upd_ssh(){ # 從 Windows 的 .ssh 中複製檔案到 ~/.ssh
 		rm -rf ~/.ssh
 		/bin/cp -rf "/mnt/c/Users/Ryanho/.ssh" ~/.ssh
 		chmod 600 ~/.ssh/*
 	}
+
+	# for ls dracula colors 
+	LS_COLORS="fi=00:mi=00:mh=00:ln=01;36:or=01;31:di=01;34:ow=04;01;34:st=34:tw=04;34:pi=01;33:so=01;33:do=01;33:bd=01;33:cd=01;33:su=01;35:sg=01;35:ca=01;35:ex=01;32:no=38;5;248"
+	export LS_COLORS
+
 	# Windows Path handling for performance
 	WIN_PATH=$(echo $PATH | tr ':' '\n' | grep '/mnt/c' | tr '\n' ':' | sed 's/.$//')
 	export PATH=$(echo $PATH | tr ':' '\n' | grep -v '/mnt/c' | tr '\n' ':' | sed 's/.$//')
@@ -167,7 +171,3 @@ typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-
-# for ls dracula colors 
-LS_COLORS="fi=00:mi=00:mh=00:ln=01;36:or=01;31:di=01;34:ow=04;01;34:st=34:tw=04;34:pi=01;33:so=01;33:do=01;33:bd=01;33:cd=01;33:su=01;35:sg=01;35:ca=01;35:ex=01;32:no=38;5;248"
-export LS_COLORS
