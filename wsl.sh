@@ -9,6 +9,7 @@ echo $SHELL
 $SHELL --version
 
 #Install oh-my-zsh
+# sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 echo "⮀ ± ⭠ ➦ ✔ ✘ ⚡"
 
@@ -25,10 +26,11 @@ git config --global core.autocrlf input
 
 #add dracula theme for zsh
 git clone https://github.com/dracula/zsh.git
-cp ./zsh/dracula.zsh-theme /${USER}/.oh-my-zsh/themes/dracula.zsh-theme
-cp -r ./zsh/lib /${USER}/.oh-my-zsh/themes/lib
-cp ./.zshrc /${USER}/.zshrc
-rm -r zsh
+sudo cp ./zsh/dracula.zsh-theme $HOME/.oh-my-zsh/themes/dracula.zsh-theme
+sudo cp -r ./zsh/lib $HOME/.oh-my-zsh/themes/lib
+sudo cp ./.zshrc $HOME/.zshrc
+rm -rf zsh
+# omz update
 upgrade_oh_my_zsh
 
 #git ssh
